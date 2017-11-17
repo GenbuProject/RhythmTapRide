@@ -1,0 +1,20 @@
+@Font-Face {
+	Font-Family: "Hall Fetica";
+	Src: URL("https://genbuproject.github.io/Fonts/Hall Fetica/Hall Fetica.ttf");
+}
+
+
+
+* {
+	Font-Family: "Hall Fetica", "メイリオ";
+	Box-Sizing: Border-Box;
+}
+
+Body {
+	Display: Flex;
+	Flex-Direction: Row;
+	Justify-Content: Center;
+
+	Margin: 0;
+	Background: URL("assets/images/Foreground0001.png") Center / Cover;
+}

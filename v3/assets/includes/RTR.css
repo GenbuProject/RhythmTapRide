@@ -1,0 +1,20 @@
+RTR-Score-Scorebar:Before {
+	Content: "";
+
+	Display: Block;
+	Width: var(--Score, 0%);
+	Height: 100%;
+
+	Background: Linear-Gradient(90deg, Orange, DarkOrange);
+	Border-Radius: 1pc;
+}
+
+RTR-Score-Scorebar {
+	Display: Block;
+	Width: 100%;
+	Height: 50%;
+
+	Background: Gray;
+	Border: Medium Solid White;
+	Border-Radius: 1pc;
+}

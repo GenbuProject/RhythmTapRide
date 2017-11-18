@@ -38,35 +38,33 @@ class RTR {
 		}
 	}
 
-	static get ExtendedComponent () {
-		return class ExtendedComponent {
-			constructor (onChange = (data) => {}) {
-				this.watcher = new MutationObserver(datas => {
-					datas.forEach(data => {
-						onChange(data);
-					});
-				});
+	static get Tone () {
+		return class Tone {
+			constructor () {
+
+			}
+
+			renderer () {
+				
 			}
 		}
 	}
 
 	static get Scorebar () {
-		return class Scorebar extends RTR.ExtendedComponent {
+		return class Scorebar {
 			constructor (score = 0) {
-				super(data => {
-					switch (data.attributeName) {
-						case "score":
-							this.score = data.target[data.attributeName];
-							break;
-					}
-				});
-
 				this.self = DOM("RTR-Scorebar");
-				this.score = score;
 
-				this.watcher.observe(this.self, {
-					attributes: true
-				});
+				this.score = score;
+			}
+
+			get score () { return this._score }
+
+			set score (val = 0) {
+				this._score = val;
+
+				this.self.setAttribute("score", this._score);
+				this.self.style.setProperty("--Score", this.score > 1000000 ? "100%" : `${this._score / 10000}%`);
 			}
 		}
 	}

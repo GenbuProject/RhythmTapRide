@@ -1,4 +1,26 @@
-RTR-Scorebar::Before {
+Body {
+	Display: Flex;
+	Flex-Direction: Column;
+	Justify-Content: Center;
+
+	Margin: 0;
+}
+
+
+
+RTR-Scorebar {
+	Display: Flex;
+	Flex-Direction: Row;
+}
+
+RTR-Scorebar > Img {
+	Height: 2rem;
+	Margin-Right: 1rem;
+
+	Pointer-Events: None;
+}
+
+RTR-Scorebar-Score::Before {
 	Content: "";
 
 	Display: Block;
@@ -6,20 +28,20 @@ RTR-Scorebar::Before {
 	Height: 100%;
 
 	Background: Linear-Gradient(90deg, Orange, DarkOrange);
-	Border-Radius: 2rem;
+	Border-Radius: 0 2rem 2rem 0;
 }
 
-RTR-Scorebar {
+RTR-Scorebar-Score {
 	Display: Block;
 	Width: 100%;
 	Height: 2rem;
 
 	Background: Gray;
 	Border: Medium Solid White;
-	Border-Radius: 2rem;
+	Border-Radius: 0 2rem 2rem 0;
 }
 
-RTR-Scorebar::After {
+RTR-Scorebar-Score::After {
 	Content: var(--Score, "0");
 
 	Position: Relative;

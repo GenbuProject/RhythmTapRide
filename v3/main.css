@@ -6,15 +6,10 @@
 
 
 * {
-	Font-Family: "Hall Fetica", "メイリオ";
+	Font-Family: "Minecraft", "Hall Fetica", "メイリオ";
 	Box-Sizing: Border-Box;
 }
 
 Body {
-	Display: Flex;
-	Flex-Direction: Column;
-	Justify-Content: Center;
-
-	Margin: 0;
 	Background: URL("assets/images/Foreground0001.png") Center / Cover;
 }

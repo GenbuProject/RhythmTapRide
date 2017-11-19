@@ -14,8 +14,8 @@ window.addEventListener("resize", () => {
 	});
 });
 
-/*setInterval(() => {
-	base.score.score += 1000;
+setInterval(() => {
+	base.score.score += Math.random.randomInt(1000, 1500);
 	
 	if (base.score.score >= 1000000) base.score.score = 0;
-});*/
+});

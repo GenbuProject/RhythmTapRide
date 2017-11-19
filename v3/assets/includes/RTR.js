@@ -82,7 +82,7 @@ class RTR {
 		return class ToneStream {
 			static get Tone () {
 				return class Tone {
-					get ringSeparator () { return 5 }
+					static get ringDistance () { return 5 }
 
 
 
@@ -93,12 +93,12 @@ class RTR {
 						this.y = y,
 						this.radius = radius;
 		
-						this.ringColor = "Plum";
+						this.color = "Plum";
 					}
 		
 					render () {
-						this.root.Graphic.fillCircle(this.x, this.y, this.radius - this.ringSeparator, this.ringColor);
-						this.root.Graphic.strokeCircle(this.x, this.y, this.radius, this.ringColor);
+						this.root.Graphic.fillCircle(this.x, this.y, this.radius - Tone.ringDistance, this.color);
+						this.root.Graphic.strokeCircle(this.x, this.y, this.radius, this.color);
 					}
 				}
 			}
@@ -112,18 +112,18 @@ class RTR {
 					constructor (root, startX = 0, startY = 0, deg = 0) {
 						super(root);
 
-						this.radius = this.root.height / 10;
-						this.width = this.height = this.radius * 2;
-
 						this.x = startX + this.distance * Math.cos(DOM.Util.degToRad(180 + deg)),
-						this.y = startY - this.distance * Math.sin(DOM.Util.degToRad(180 + deg));
+						this.y = startY - this.distance * Math.sin(DOM.Util.degToRad(180 + deg)),
+						this.radius = this.root.height / 10;
+
+						this.color = "Cyan";
 
 						this.render();
 					}
 
 					render () {
-						this.root.Graphic.drawImage("assets/images/EndPoint.png", this.x - this.radius + this.ringSeparator, this.y - this.radius + this.ringSeparator, this.width - this.ringSeparator * 2, this.height - this.ringSeparator * 2);
-						this.root.Graphic.strokeCircle(this.x, this.y, this.radius, this.ringColor);
+						this.root.Graphic.drawImageAsCircle("assets/images/EndPoint.png", this.x, this.y, this.radius - EndPoint.ringDistance);
+						this.root.Graphic.strokeCircle(this.x, this.y, this.radius, this.color);
 					}
 				}
 			}
@@ -222,6 +222,15 @@ class RTR {
 
 					img.addEventListener("load", () => {
 						ctx.drawImage(img, x, y, width, height);
+					});
+			}
+
+			static drawImageAsCircle (url = "", x = 0, y = 0, radius = 0) {
+				let img = new Image();
+					img.src = url;
+
+					img.addEventListener("load", () => {
+						ctx.drawImage(img, x - radius, y - radius, radius * 2, radius * 2);
 					});
 			}
 		}

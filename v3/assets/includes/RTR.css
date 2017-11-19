@@ -11,11 +11,13 @@ Body {
 RTR-Scorebar {
 	Display: Flex;
 	Flex-Direction: Row;
+
+	Font-Size: 1.5rem;
 }
 
 RTR-Scorebar > Img {
-	Height: 2rem;
-	Margin-Right: 1rem;
+	Height: 2em;
+	Margin-Right: 1em;
 
 	Pointer-Events: None;
 }
@@ -28,24 +30,24 @@ RTR-Scorebar-Score::Before {
 	Height: 100%;
 
 	Background: Linear-Gradient(90deg, Orange, DarkOrange);
-	Border-Radius: 0 2rem 2rem 0;
+	Border-Radius: 0 2em 2em 0;
 }
 
 RTR-Scorebar-Score {
 	Display: Block;
 	Width: 100%;
-	Height: 2rem;
+	Height: 2em;
 
 	Background: Gray;
 	Border: Medium Solid White;
-	Border-Radius: 0 2rem 2rem 0;
+	Border-Radius: 0 2em 2em 0;
 }
 
 RTR-Scorebar-Score::After {
 	Content: var(--Score, "0");
 
 	Position: Relative;
-	Bottom: 1.5rem;
+	Bottom: 1.5em;
 
 	Display: Flex;
 	Align-Items: Center;

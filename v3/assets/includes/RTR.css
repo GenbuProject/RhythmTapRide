@@ -55,3 +55,8 @@ RTR-Scorebar-Score::After {
 
 	Color: White;
 }
+
+RTR-ToneStream-EndPoint {
+	Background: URL("assets/images/Icon.png") Center / Cover;
+	Border-Radius: 100%;
+}

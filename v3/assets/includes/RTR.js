@@ -78,6 +78,22 @@ class RTR {
 		}
 	}
 
+	static get ToneStreamCollection () {
+		return class ToneStreamCollection extends Array {
+			constructor (root, length = 0) {
+				super(length);
+
+				for (let i = 0; i < length + 1; i++) this.push(new RTR.ToneStream(root, 180 / length * i));
+			}
+
+			render () {
+				this.forEach(stream => {
+					stream.endPoint.render();
+				});
+			}
+		}
+	}
+
 	static get ToneStream () {
 		return class ToneStream {
 			static get Tone () {
@@ -97,18 +113,14 @@ class RTR {
 					}
 		
 					render () {
-						this.root.Graphic.fillCircle(this.x, this.y, this.radius - Tone.ringDistance, this.color);
-						this.root.Graphic.strokeCircle(this.x, this.y, this.radius, this.color);
+						//this.root.Graphic.fillCircle(this.x, this.y, this.radius - Tone.ringDistance, this.color);
+						this.root.Graphic.strokeCircle(this.x, this.y, this.radius, this.color, 2.5);
 					}
 				}
 			}
 		
 			static get EndPoint () {
 				return class EndPoint extends RTR.ToneStream.Tone {
-					get distance () { return this.root.height / 8 * 5 }
-
-
-
 					constructor (root, startX = 0, startY = 0, deg = 0) {
 						super(root);
 
@@ -121,9 +133,11 @@ class RTR {
 						this.render();
 					}
 
+					get distance () { return this.root.height / 8 * 5 }
+
 					render () {
 						this.root.Graphic.drawImageAsCircle("assets/images/EndPoint.png", this.x, this.y, this.radius - EndPoint.ringDistance);
-						this.root.Graphic.strokeCircle(this.x, this.y, this.radius, this.color);
+						this.root.Graphic.strokeCircle(this.x, this.y, this.radius, this.color, 2.5);
 					}
 				}
 			}
@@ -136,31 +150,20 @@ class RTR {
 				this.deg = deg,
 				this.speed = speed;
 
+				this.tones = [];
 				this.endPoint = new RTR.ToneStream.EndPoint(this.root, this.x, this.y, this.deg, 20);
-			}
-
-			addTone () {
-				let tone = new RTR.ToneStream.Tone(this.root, this.x, this.y, 10),
-					dx = this.speed * Math.cos(DOM.Util.degToRad(180 + this.deg)),
-					dy = -this.speed * Math.sin(DOM.Util.degToRad(180 + this.deg));
-
-				let looper = setInterval(() => {
-					this.root.Graphic.clearBackground("Black");
-
-					tone.x += dx,
-					tone.y += dy;
-					tone.radius += 0.5;
-
-					tone.render();
-
-					if (tone.x < 0 || tone.x > this.root.width + tone.radius || tone.y > this.root.height + tone.radius) {
-						clearInterval(looper);
-					}
-				});
 			}
 
 			get x () { return this.root.width / 2 }
 			get y () { return this.root.height / 5 }
+
+			addTone () {
+				let tone = new RTR.ToneStream.Tone(this.root, this.x, this.y, this.endPoint.radius),
+					dx = this.speed * Math.cos(DOM.Util.degToRad(180 + this.deg)),
+					dy = -this.speed * Math.sin(DOM.Util.degToRad(180 + this.deg));
+
+				this.tones.push(tone);
+			}
 		}
 	}
 
@@ -191,9 +194,8 @@ class RTR {
 			ctx = this.ctx;
 
 		return class Graphic {
-			static clearBackground (color = "Black") {
-				ctx.fillStyle = color;
-				ctx.fillRect(0, 0, root.width, root.height);
+			static clearBackground () {
+				ctx.clearRect(0, 0, root.width, root.height);
 			}
 
 			static shapeCircle (x = 0, y = 0, radius = 0) {
@@ -202,11 +204,16 @@ class RTR {
 				ctx.closePath();
 			}
 
-			static strokeCircle (x = 0, y = 0, radius = 0, color = "Red") {
+			static strokeCircle (x = 0, y = 0, radius = 0, color = "Red", strokeWidth = 1) {
 				this.shapeCircle(x, y, radius);
 
-				ctx.strokeStyle = color;
+				ctx.strokeStyle = color,
+				ctx.lineWidth = strokeWidth;
+
 				ctx.stroke();
+				
+				ctx.strokeStyle = "",
+				ctx.lineWidth = 1;
 			}
 
 			static fillCircle (x = 0, y = 0, radius = 0, color = "Red") {

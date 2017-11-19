@@ -1,6 +1,31 @@
 let base = new RTR();
-	base.toneStreams = [];
-	for (let i = 0; i < 9; i++) base.toneStreams[i] = new RTR.ToneStream(base, 180 / 8 * i);
+	base.streams = new RTR.ToneStreamCollection(base, 8);
+
+setInterval(() => {
+	base.Graphic.clearBackground();
+	base.streams.render();
+
+	/*base.streams.forEach(stream => {
+		let dx = stream.speed * Math.cos(DOM.Util.degToRad(180 + stream.deg)),
+			dy = -stream.speed * Math.sin(DOM.Util.degToRad(180 + stream.deg));
+
+		stream.tones.forEach((tone, index) => {
+			base.ctx.fillStyle = "Black";
+			base.ctx.fillRect(tone.x - tone.radius, tone.y - tone.radius, tone.radius * 2, tone.radius * 2);
+			
+			tone.x += dx,
+			tone.y += dy;
+
+			tone.render();
+
+			if (tone.x < 0 || tone.x > base.width + tone.radius || tone.y > base.height + tone.radius) {
+				stream.tones.splice(index);
+			}
+		});
+		
+		stream.endPoint.render();
+	});*/
+}, 25);
 
 window.addEventListener("resize", () => {
 	base.width = DOM.width,
@@ -14,8 +39,8 @@ window.addEventListener("resize", () => {
 	});
 });
 
-setInterval(() => {
+/*setInterval(() => {
 	base.score.score += Math.random.randomInt(1000, 1500);
 	
 	if (base.score.score >= 1000000) base.score.score = 0;
-});
+});*/

@@ -12,7 +12,7 @@
 
 Body {
 	Display: Flex;
-	Flex-Direction: Row;
+	Flex-Direction: Column;
 	Justify-Content: Center;
 
 	Margin: 0;

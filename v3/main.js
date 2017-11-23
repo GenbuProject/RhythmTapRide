@@ -2,8 +2,8 @@ let base = new RTR();
 	base.streams = new RTR.ToneStreamCollection(base, 8);
 
 requestAnimationFrame(function looper () {
-	base.Graphic.clearBackground();
 	base.streams.render();
+	base.Graphic.clearBackground();
 
 	/*base.streams.forEach(stream => {
 		let dx = stream.speed * Math.cos(DOM.Util.degToRad(180 + stream.deg)),

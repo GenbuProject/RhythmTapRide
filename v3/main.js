@@ -1,7 +1,7 @@
 let base = new RTR();
 	base.streams = new RTR.ToneStreamCollection(base, 8);
 
-setInterval(() => {
+requestAnimationFrame(function looper () {
 	base.Graphic.clearBackground();
 	base.streams.render();
 
@@ -25,7 +25,9 @@ setInterval(() => {
 		
 		stream.endPoint.render();
 	});*/
-}, 25);
+	
+	requestAnimationFrame(looper);
+});
 
 window.addEventListener("resize", () => {
 	base.width = DOM.width,

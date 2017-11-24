@@ -1,7 +1,10 @@
+HTML, Body {
+	Height: 100%;
+}
+
 Body {
 	Display: Flex;
 	Flex-Direction: Column;
-	Justify-Content: Center;
 
 	Margin: 0;
 }
@@ -56,7 +59,8 @@ RTR-Scorebar-Score::After {
 	Color: White;
 }
 
-RTR-ToneStream-EndPoint {
-	Background: URL("assets/images/Icon.png") Center / Cover;
-	Border-Radius: 100%;
+RTR-Layout * {
+	Position: Absolute;
+
+	Flex: 1;
 }

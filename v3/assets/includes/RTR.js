@@ -1,4 +1,17 @@
 class RTR {
+	static get ASSETS () {
+		return {
+			IMAGES: {
+				ENDPOINT: (() => {
+					let img = new Image();
+						img.src = "assets/images/EndPoint.png";
+						
+					return img
+				})()
+			}
+		}
+	}
+
 	static get AudioPlayer () {
 		return class AudioPlayer extends AudioContext {
 			constructor (url = "") {
@@ -81,14 +94,34 @@ class RTR {
 	static get ToneStreamCollection () {
 		return class ToneStreamCollection extends Array {
 			constructor (root, length = 0) {
-				super(length);
+				super();
 
-				for (let i = 0; i < length + 1; i++) this.push(new RTR.ToneStream(root, 180 / length * i));
+				for (let i = 0; i < length; i++) {
+					this.push(new RTR.ToneStream(root, 180 / (length - 1) * i));
+				}
 			}
 
 			render () {
 				this.forEach(stream => {
 					stream.endPoint.render();
+
+					let dx = stream.speed * Math.cos(DOM.Util.degToRad(180 + stream.deg)),
+						dy = -stream.speed * Math.sin(DOM.Util.degToRad(180 + stream.deg));
+
+					stream.tones.forEach((tone, index) => {
+						this.root.toneCtx.clearRect(tone.x - tone.radius, tone.y - tone.radius, tone.radius * 2, tone.radius * 2);
+						
+						tone.x += dx,
+						tone.y += dy;
+			
+						tone.render();
+			
+						if (tone.x < 0 || tone.x > this.root.width + tone.radius || tone.y > this.root.height + tone.radius) {
+							stream.tones.splice(index);
+						}
+					});
+
+					RTR.Graphic.clearBackground(stream.root.streamCtx, stream.root);
 				});
 			}
 		}
@@ -113,8 +146,8 @@ class RTR {
 					}
 		
 					render () {
-						//this.root.Graphic.fillCircle(this.x, this.y, this.radius - Tone.ringDistance, this.color);
-						this.root.Graphic.strokeCircle(this.x, this.y, this.radius, this.color, 2.5);
+						//RTR.Graphic.fillCircle(this.root.streanCtx, this.x, this.y, this.radius - Tone.ringDistance, this.color);
+						RTR.Graphic.strokeCircle(this.root.streanCtx, this.x, this.y, this.radius, this.color, 2.5);
 					}
 				}
 			}
@@ -136,8 +169,8 @@ class RTR {
 					get distance () { return this.root.height / 8 * 5 }
 
 					render () {
-						this.root.Graphic.drawImageAsCircle("assets/images/EndPoint.png", this.x, this.y, this.radius - EndPoint.ringDistance);
-						this.root.Graphic.strokeCircle(this.x, this.y, this.radius, this.color, 2.5);
+						RTR.Graphic.drawImageAsCircle(this.root.streamCtx, RTR.ASSETS.IMAGES.ENDPOINT, this.x, this.y, this.radius - EndPoint.ringDistance);
+						RTR.Graphic.strokeCircle(this.root.streamCtx, this.x, this.y, this.radius, this.color, 2.5);
 					}
 				}
 			}
@@ -167,45 +200,20 @@ class RTR {
 		}
 	}
 
-
-
-	constructor () {
-		let scorebar = new RTR.Scorebar(),
-			score = this.score = new RTR.Scorebar.Score(0);
-			
-			scorebar.self.appendChild(score.self);
-			document.body.appendChild(scorebar.self);
-
-		let cvs = this.cvs = new DOM("Canvas", { id: "PlayingLayout" });
-			document.body.appendChild(cvs);
-
-
-
-		this.width = DOM.width,
-		this.height = DOM.height - score.self.offsetHeight;
-
-		this.ctx = this.cvs.getContext("2d");
-	}
-
-
-
-	get Graphic () {
-		let root = this,
-			ctx = this.ctx;
-
+	static get Graphic () {
 		return class Graphic {
-			static clearBackground () {
+			static clearBackground (ctx, root) {
 				ctx.clearRect(0, 0, root.width, root.height);
 			}
 
-			static shapeCircle (x = 0, y = 0, radius = 0) {
+			static shapeCircle (ctx, x = 0, y = 0, radius = 0) {
 				ctx.beginPath();
 				ctx.arc(x, y, radius, 0, Math.PI * 2, true);
 				ctx.closePath();
 			}
 
-			static strokeCircle (x = 0, y = 0, radius = 0, color = "Red", strokeWidth = 1) {
-				this.shapeCircle(x, y, radius);
+			static strokeCircle (ctx, x = 0, y = 0, radius = 0, color = "Red", strokeWidth = 1) {
+				this.shapeCircle(ctx, x, y, radius);
 
 				ctx.strokeStyle = color,
 				ctx.lineWidth = strokeWidth;
@@ -216,31 +224,45 @@ class RTR {
 				ctx.lineWidth = 1;
 			}
 
-			static fillCircle (x = 0, y = 0, radius = 0, color = "Red") {
-				this.shapeCircle(x, y, radius);
+			static fillCircle (ctx, x = 0, y = 0, radius = 0, color = "Red") {
+				this.shapeCircle(ctx, x, y, radius);
 
 				ctx.fillStyle = color;
 				ctx.fill();
 			}
 
-			static drawImage (url = "", x = 0, y = 0, width, height) {
-				let img = new Image();
-					img.src = url;
-
-					img.addEventListener("load", () => {
-						ctx.drawImage(img, x, y, width, height);
-					});
+			static drawImage (ctx, img = new Image(), x = 0, y = 0, width, height) {
+				ctx.drawImage(img, x, y, width, height);
 			}
 
-			static drawImageAsCircle (url = "", x = 0, y = 0, radius = 0) {
-				let img = new Image();
-					img.src = url;
-
-					img.addEventListener("load", () => {
-						ctx.drawImage(img, x - radius, y - radius, radius * 2, radius * 2);
-					});
+			static drawImageAsCircle (ctx, img = new Image(), x = 0, y = 0, radius = 0) {
+				ctx.drawImage(img, x - radius, y - radius, radius * 2, radius * 2);
 			}
 		}
+	}
+
+
+
+	constructor () {
+		let scorebar = new RTR.Scorebar(),
+			score = this.score = new RTR.Scorebar.Score(0);
+			
+			scorebar.self.appendChild(score.self),
+			document.body.appendChild(scorebar.self);
+
+		let playingLayout = new DOM("RTR-Layout"),
+			streamCvs = this.streamCvs = new DOM("Canvas", { id: "StreamCanvas" }),
+			toneCvs = this.toneCvs = new DOM("Canvas", { id: "ToneCanvas" });
+
+			playingLayout.appendChild(streamCvs),
+			playingLayout.appendChild(toneCvs),
+			document.body.appendChild(playingLayout);
+
+		this.streamCtx = this.streamCvs.getContext("2d"),
+		this.toneCtx = this.toneCvs.getContext("2d");
+
+		this.width = DOM.width,
+		this.height = DOM.height - score.self.offsetHeight;
 	}
 
 	get width () { return this._width }
@@ -248,7 +270,13 @@ class RTR {
 	set width (val = 0) {
 		this._width = val;
 
-		this.cvs.applyProperties({ attributes: { width: this._width } });
+		[this.streamCvs, this.toneCvs].forEach(cvs => {
+			cvs.applyProperties({
+				attributes: {
+					width: this._width
+				}
+			});
+		});
 	}
 
 	get height () { return this._height }
@@ -256,6 +284,12 @@ class RTR {
 	set height (val = 0) {
 		this._height = val;
 
-		this.cvs.applyProperties({ attributes: { height: this._height } });
+		[this.streamCvs, this.toneCvs].forEach(cvs => {
+			cvs.applyProperties({
+				attributes: {
+					height: this._height
+				}
+			});
+		});
 	}
 }

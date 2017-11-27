@@ -25,7 +25,15 @@ window.addEventListener("resize", () => {
 });
 
 setInterval(() => {
-	new RTR.Tone(base, DOM.Util.degToRad(180 + 180 / 8 * Math.random.randomInt(0, 8)));
+	switch (Math.random.randomInt(1)) {
+		case 0:
+			new RTR.Tone(base, DOM.Util.degToRad(180 + 180 / 8 * Math.random.randomInt(0, 8)));
+			break;
+
+		case 1:
+			new RTR.Tone.LongTone(base, DOM.Util.degToRad(180 + 180 / 8 * Math.random.randomInt(0, 8)), 8);
+			break;
+	}
 }, 500);
 
 /*setInterval(() => {

@@ -134,15 +134,27 @@ class RTR {
 
 	static get Tone () {
 		return class Tone {
-			constructor (root, deg = 0) {
+			static get LongTone () {
+				return class LongTone extends Tone {
+					constructor (root, rad = 0, length = 0) {
+						super(root, rad);
+					}
+
+					get color () { return "Cyan" }
+				}
+			}
+
+
+
+			constructor (root, rad = 0) {
 				this.root = root;
 
 				this.x = this.root.width / 2,
 				this.y = DOM.vmin * (5 + 7.5),
-				this.deg = deg;
+				this.rad = rad;
 
-				this.dx = this.velocity * Math.cos(deg),
-				this.dy = this.velocity * Math.sin(deg);
+				this.dx = this.velocity * Math.cos(rad),
+				this.dy = this.velocity * Math.sin(rad);
 
 				base.tones.push(this);
 			}
@@ -154,6 +166,13 @@ class RTR {
 			render () {
 				let ctx = this.root.toneCtx;
 					RTR.Graphic.strokeCircle(ctx, this.x, this.y, this.radius, this.color, DOM.vmin * 0.75);
+
+					/*ctx.rotate(this.rad);
+					ctx.strokeStyle = "Cyan";
+					ctx.lineWidth = DOM.vmin * 0.75;
+					ctx.strokeRect(this.x, this.y - DOM.vmin * 0.75, DOM.vmin * 1.5, 150);
+					ctx.lineWidth = 1;
+					ctx.rotate(0);*/
 			}
 		}
 	}

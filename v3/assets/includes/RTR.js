@@ -154,6 +154,8 @@ class RTR {
 
 
 	constructor (streamQuantity = 0) {
+		this.sePlayer = new RTR.AudioPlayer();
+
 		let scorebar = new RTR.Scorebar(),
 			score = this.score = new RTR.Scorebar.Score(0);
 			
@@ -177,7 +179,22 @@ class RTR {
 						"Transform": `Rotate(${90 - 180 / (streamQuantity - 1) * i}deg)`
 					},
 
-					children: [ new DOM("RTR-ToneStream-EndPoint") ]
+					children: [
+						new DOM("RTR-ToneStream-EndPoint", {
+							events: {
+								"click": () => {
+									this.sePlayer.src = "assets/sounds/Tone_Great.mp3";
+									this.sePlayer.play();
+
+									this.score.score += Math.random.randomInt(1000, 1500);
+
+									if (this.score.score >= 1000000) {
+										this.score.score = 0;
+									}
+								}
+							}
+						})
+					]
 				})
 			);
 		}

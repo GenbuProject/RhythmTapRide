@@ -1,6 +1,6 @@
 /*/
  *#######################################################################
- *DOM Extender v3.2
+ *DOM Extender v3.3
  *Copyright (C) 2016-2020 Genbu Project & Genbu Hase All Rights Reversed.
  *#######################################################################
 /*/
@@ -1240,7 +1240,11 @@ class DOM {
 
 
 	
-	static get apiInfo () { return new DOM.APIInfo("DOM Extender", 3.1) }
+	static get apiInfo () { return new DOM.APIInfo("DOM Extender", 3.3) }
 	static get width () { return window.innerWidth }
 	static get height () { return window.innerHeight }
+	static get vw () { return window.innerWidth / 100 }
+	static get vh () { return window.innerHeight / 100 }
+	static get vmin () { return Math.min(window.innerWidth, window.innerHeight) / 100 }
+	static get vmax () { return Math.max(window.innerWidth, window.innerHeight) / 100 }
 }

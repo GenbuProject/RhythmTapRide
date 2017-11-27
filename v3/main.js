@@ -1,18 +1,22 @@
 let base = new RTR(9);
 
-requestAnimationFrame(function looper () {
+window.requestAnimationFrame(function looper () {
 	RTR.Graphic.clearBackground(base.toneCtx, base);
 
 	base.tones.forEach((tone, index) => {
-		tone.render();
+		if (tone) {
+			tone.render();
 
-		tone.x += tone.dx,
-		tone.y -= tone.dy;
+			tone.x += tone.dx,
+			tone.y -= tone.dy;
 
-		if (tone.x < 0 || tone.x > base.width || tone.y < 0 || tone.y > base.height) base.tones.splice(index);
+			if (tone.x + tone.radius < 0 || tone.x - tone.radius > base.width || tone.y + tone.radius < 0 || tone.y - tone.radius > base.height) {
+				base.tones.splice(index, 1);
+			}
+		}
 	});
 
-	requestAnimationFrame(looper);
+	window.requestAnimationFrame(looper);
 });
 
 window.addEventListener("resize", () => {

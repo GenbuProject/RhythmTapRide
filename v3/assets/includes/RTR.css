@@ -111,6 +111,6 @@ RTR-ToneStream-EndPoint {
 	Width: 15vmin;
 
 	Background: URL("../images/EndPoint.png") Center / Cover;
-	Border: 1vmin Ridge #FF6644;
+	Border: 0.75vmin Ridge #FF6644;
 	Border-Radius: 100%;
 }

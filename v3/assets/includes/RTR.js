@@ -138,7 +138,7 @@ class RTR {
 				this.root = root;
 
 				this.x = this.root.width / 2,
-				this.y = this.root.vmin * (5 + 7.5),
+				this.y = DOM.vmin * (5 + 7.5),
 				this.deg = deg;
 
 				this.dx = this.velocity * Math.cos(deg),
@@ -147,13 +147,13 @@ class RTR {
 				base.tones.push(this);
 			}
 
-			get radius () { return this.root.vmin * 7.5 }
+			get radius () { return DOM.vmin * 7.5 }
 			get velocity () { return 5 }
 			get color () { return "Plum" }
 
 			render () {
 				let ctx = this.root.toneCtx;
-					RTR.Graphic.strokeCircle(ctx, this.x, this.y, this.radius, this.color, 2.5);
+					RTR.Graphic.strokeCircle(ctx, this.x, this.y, this.radius, this.color, DOM.vmin * 0.75);
 			}
 		}
 	}
@@ -240,9 +240,4 @@ class RTR {
 			});
 		});
 	}
-
-	get vw () { return DOM.width / 100 }
-	get vh () { return DOM.height / 100 }
-	get vmin () { return Math.min(DOM.width, DOM.height) / 100 }
-	get vmax () { return Math.max(DOM.width, DOM.height) / 100 }
 }

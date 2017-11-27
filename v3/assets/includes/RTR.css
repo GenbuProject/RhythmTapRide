@@ -87,7 +87,7 @@ RTR-Layout > RTR-Layout-ToneStream {
 
 RTR-ToneStream {
 	Position: Absolute;
-	Bottom: 5vmin;
+	Top: 5vmin;
 
 	Display: Flex;
 	Flex-Direction: Column-Reverse;
@@ -110,7 +110,7 @@ RTR-ToneStream-EndPoint {
 	Display: Block;
 	Width: 15vmin;
 
-	Background: URL("/RhythmTapRide/v3/assets/images/EndPoint.png") Center / Cover;
+	Background: URL("../images/EndPoint.png") Center / Cover;
 	Border: 1vmin Ridge #FF6644;
 	Border-Radius: 100%;
 }

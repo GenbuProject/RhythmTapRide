@@ -134,15 +134,22 @@ class RTR {
 
 	static get Tone () {
 		return class Tone {
-			constructor (root, x = 0, y = 0, color = "") {
+			constructor (root, deg = 0) {
 				this.root = root;
 
-				this.x = x,
-				this.y = y,
-				this.color = color;
+				this.x = this.root.width / 2,
+				this.y = this.root.vmin * (5 + 7.5),
+				this.deg = deg;
+
+				this.dx = this.velocity * Math.cos(deg),
+				this.dy = this.velocity * Math.sin(deg);
+
+				base.tones.push(this);
 			}
 
-			get radius () { return this.root.height / 20 }
+			get radius () { return this.root.vmin * 7.5 }
+			get velocity () { return 5 }
+			get color () { return "Plum" }
 
 			render () {
 				let ctx = this.root.toneCtx;
@@ -154,6 +161,7 @@ class RTR {
 
 
 	constructor (streamQuantity = 0) {
+		this.tones = [];
 		this.sePlayer = new RTR.AudioPlayer();
 
 		let scorebar = new RTR.Scorebar(),
@@ -183,7 +191,7 @@ class RTR {
 						new DOM("RTR-ToneStream-EndPoint", {
 							events: {
 								"click": () => {
-									this.sePlayer.src = "assets/sounds/Tone_Great.mp3";
+									this.sePlayer.src = "assets/sounds/Tone.wav";
 									this.sePlayer.play();
 
 									this.score.score += Math.random.randomInt(1000, 1500);
@@ -232,4 +240,9 @@ class RTR {
 			});
 		});
 	}
+
+	get vw () { return DOM.width / 100 }
+	get vh () { return DOM.height / 100 }
+	get vmin () { return Math.min(DOM.width, DOM.height) / 100 }
+	get vmax () { return Math.max(DOM.width, DOM.height) / 100 }
 }

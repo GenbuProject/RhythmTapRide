@@ -72,6 +72,8 @@ RTR-Layout Canvas {
 }
 
 RTR-Layout > RTR-Layout-ToneStream {
+	Position: Relative;
+	
 	Display: Flex;
 	Flex-Direction: Row;
 	Justify-Content: Center;

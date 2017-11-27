@@ -15,11 +15,13 @@ RTR-Scorebar {
 	Display: Flex;
 	Flex-Direction: Row;
 
-	Font-Size: 1.5rem;
+	Height:10vmin;
+
+	Font-Size: 5vmin;
 }
 
 RTR-Scorebar > Img {
-	Height: 2em;
+	Height: 100%;
 	Margin-Right: 1em;
 
 	Pointer-Events: None;
@@ -58,6 +60,8 @@ RTR-Scorebar-Score::After {
 	Color: White;
 }
 
+
+
 RTR-Layout {
 	Display: Flex;
 	Flex-Direction: Row;
@@ -73,7 +77,7 @@ RTR-Layout Canvas {
 
 RTR-Layout > RTR-Layout-ToneStream {
 	Position: Relative;
-	
+
 	Display: Flex;
 	Flex-Direction: Row;
 	Justify-Content: Center;
@@ -83,14 +87,14 @@ RTR-Layout > RTR-Layout-ToneStream {
 
 RTR-ToneStream {
 	Position: Absolute;
-	Bottom: 5vh;
+	Bottom: 5vmin;
 
 	Display: Flex;
 	Flex-Direction: Column-Reverse;
 
-	Height: 75vh;
+	Height: 75vmin;
 
-	Transform-Origin: 7.5vh 7.5vh;
+	Transform-Origin: 7.5vmin 7.5vmin;
 }
 
 RTR-ToneStream-EndPoint::Before {
@@ -104,10 +108,9 @@ RTR-ToneStream-EndPoint {
 	Content: "";
 
 	Display: Block;
-	Width: 15vh;
-	Height: 15vh;
+	Width: 15vmin;
 
 	Background: URL("/RhythmTapRide/v3/assets/images/EndPoint.png") Center / Cover;
-	Border: 1vh Ridge #FF6644;
+	Border: 1vmin Ridge #FF6644;
 	Border-Radius: 100%;
 }

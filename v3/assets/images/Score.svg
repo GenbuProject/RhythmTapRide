@@ -10,7 +10,7 @@
 				font-variant: normal;
 				font-feature-settings: normal;
 
-				src: url("../fonts/Hall Fetica Decompose.ttf");
+				src: url("/RhythmTapRide/v3/assets/fonts/Hall Fetica Decompose.ttf");
 			}
 		</style>
 

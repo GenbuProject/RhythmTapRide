@@ -1,9 +1,9 @@
-let base = new RTR();
-	base.streams = new RTR.ToneStreamCollection(base, 9);
+const COLORS = ["Cyan", "ForestGreen", "Yellow", "Red"];
+
+let base = new RTR(9);
 
 requestAnimationFrame(function looper () {
-	RTR.Graphic.clearBackground(base.toneCtx, base);
-	base.streams.render();
+	//RTR.Graphic.clearBackground(base.toneCtx, base);
 
 	requestAnimationFrame(looper);
 });

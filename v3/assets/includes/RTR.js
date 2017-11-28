@@ -18,29 +18,44 @@ class RTR {
 				ctx.clearRect(0, 0, root.width, root.height);
 			}
 
+			static initStroke (ctx, color = "", width = 1) {
+				ctx.strokeStyle = color,
+				ctx.lineWidth = width;
+			}
+
+			static initFill (ctx, color = "", width = 1) {
+				ctx.fillStyle = color,
+				ctx.lineWidth = width;
+			}
+
 			static shapeCircle (ctx, x = 0, y = 0, radius = 0) {
 				ctx.beginPath();
 				ctx.arc(x, y, radius, 0, Math.PI * 2, true);
 				ctx.closePath();
 			}
 
-			static strokeCircle (ctx, x = 0, y = 0, radius = 0, color = "Red", strokeWidth = 1) {
+			static strokeCircle (ctx, x = 0, y = 0, radius = 0, color = "", strokeWidth = 1) {
 				this.shapeCircle(ctx, x, y, radius);
 
-				ctx.strokeStyle = color,
-				ctx.lineWidth = strokeWidth;
-
+				this.initStroke(ctx, color, strokeWidth);
 				ctx.stroke();
-				
-				ctx.strokeStyle = "",
-				ctx.lineWidth = 1;
+				this.initStroke(ctx);
 			}
 
-			static fillCircle (ctx, x = 0, y = 0, radius = 0, color = "Red") {
+			static strokeCircleOnBorderBox (ctx, x = 0, y = 0, radius = 0, color = "", strokeWidth = 1) {
+				this.strokeCircle(ctx, x, y, radius - strokeWidth, color, strokeWidth);
+			}
+
+			static fillCircle (ctx, x = 0, y = 0, radius = 0, color = "", strokeWidth = 1) {
 				this.shapeCircle(ctx, x, y, radius);
 
-				ctx.fillStyle = color;
+				this.initFill(ctx, color, strokeWidth);
 				ctx.fill();
+				this.initFill(ctx);
+			}
+
+			static fillCircleOnBorderBox (ctx, x = 0, y = 0, radius = 0, color = "", strokeWidth = 1) {
+				this.fillCircle(ctx, x, y, radius - strokeWidth, color, strokeWidth);
 			}
 
 			static drawImage (ctx, img = new Image(), x = 0, y = 0, width, height) {
@@ -134,50 +149,53 @@ class RTR {
 
 	static get Tone () {
 		return class Tone {
-			static get LongTone () {
-				return class LongTone extends Tone {
-					constructor (root, rad = 0, length = 0) {
-						super(root, rad);
-
-						this.length = length;
-					}
-
-					get color () { return "Cyan" }
-
-					render () {
-						let ctx = this.root.toneCtx;
-							RTR.Graphic.strokeCircle(ctx, this.x, this.y, this.radius, this.color, DOM.vmin * 0.75);
-
-							//ctx.rotate(this.rad);
-							ctx.strokeStyle = "Cyan";
-							ctx.lineWidth = DOM.vmin * 0.75;
-							ctx.strokeRect(this.x - DOM.vmin * 7.5, this.y - DOM.vmin * 7.5, DOM.vmin * 15, DOM.vmin * 15 * this.length);
-					}
-				}
-			}
-
-
-
-			constructor (root, rad = 0) {
+			constructor (root, deg = 0) {
 				this.root = root;
 
 				this.x = this.root.width / 2,
 				this.y = DOM.vmin * (5 + 7.5),
-				this.rad = rad;
+				this.rad = DOM.Util.degToRad(180 + deg);
 
-				this.dx = this.velocity * Math.cos(rad),
-				this.dy = this.velocity * Math.sin(rad);
+				this.dx = this.velocity * Math.cos(this.rad),
+				this.dy = this.velocity * Math.sin(this.rad);
 
 				base.tones.push(this);
 			}
 
 			get radius () { return DOM.vmin * 7.5 }
-			get velocity () { return 5 }
+			get strokeWidth () { return DOM.vmin * 0.75 }
+			get velocity () { return DOM.vmin * (60 + 7.5) / 60 }
 			get color () { return "Plum" }
 
 			render () {
 				let ctx = this.root.toneCtx;
-					RTR.Graphic.strokeCircle(ctx, this.x, this.y, this.radius, this.color, DOM.vmin * 0.75);
+					RTR.Graphic.strokeCircleOnBorderBox(ctx, this.x, this.y, this.radius, this.color, this.strokeWidth);
+			}
+		}
+	}
+
+	static get LongTone () {
+		return class LongTone extends RTR.Tone {
+			constructor (root, deg = 0, length = 0) {
+				super(root, deg);
+
+				this.length = length;
+			}
+
+			get color () { return "Cyan" }
+
+			render () {
+				let ctx = this.root.toneCtx;
+					RTR.Graphic.strokeCircleOnBorderBox(ctx, this.x, this.y, this.radius, this.color, this.strokeWidth);
+
+					/*ctx.beginPath()
+					ctx.moveTo(this.x - this.radius, this.y - this.radius);
+					ctx.lineTo(this.x + this.dx * this.length, this.y - this.dy * this.length);
+					ctx.closePath();
+
+					RTR.Graphic.initStroke(ctx, this.color, this.strokeWidth);
+					ctx.stroke();
+					RTR.Graphic.initStroke(ctx);*/
 			}
 		}
 	}
@@ -215,9 +233,7 @@ class RTR {
 						new DOM("RTR-ToneStream-EndPoint", {
 							events: {
 								"click": () => {
-									const SOUNDS = ["assets/sounds/Tone.wav", "assets/sounds/Tone_Good.wav", "assets/sounds/Tone_Great.mp3", "assets/sounds/Tone_Perfect.wav"];
-
-									this.sePlayer.src = SOUNDS[Math.random.randomInt(3)];
+									this.sePlayer.src = "assets/sounds/Tone_Good.wav";
 									this.sePlayer.play();
 
 									this.score.score += Math.random.randomInt(1000, 1500);

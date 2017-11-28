@@ -24,17 +24,25 @@ window.addEventListener("resize", () => {
 	base.height = DOM.height - base.score.self.offsetHeight;
 });
 
-setInterval(() => {
+window.addEventListener("keydown", (event) => {
+	switch (event.keyCode) {
+		case 13:
+			new RTR.LongTone(base, 180 / 8 * Math.random.randomInt(0, 8), 16);
+			break;
+	}
+});
+
+/*setInterval(() => {
 	switch (Math.random.randomInt(1)) {
 		case 0:
-			new RTR.Tone(base, DOM.Util.degToRad(180 + 180 / 8 * Math.random.randomInt(0, 8)));
+			new RTR.Tone(base, 180 / 8 * Math.random.randomInt(0, 8));
 			break;
 
 		case 1:
-			new RTR.Tone.LongTone(base, DOM.Util.degToRad(180 + 180 / 8 * Math.random.randomInt(0, 8)), 8);
+			new RTR.LongTone(base, 180 / 8 * Math.random.randomInt(0, 8), 8);
 			break;
 	}
-}, 500);
+}, 500);*/
 
 /*setInterval(() => {
 	base.score.score += Math.random.randomInt(1000, 1500);

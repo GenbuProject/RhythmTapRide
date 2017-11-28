@@ -138,9 +138,21 @@ class RTR {
 				return class LongTone extends Tone {
 					constructor (root, rad = 0, length = 0) {
 						super(root, rad);
+
+						this.length = length;
 					}
 
 					get color () { return "Cyan" }
+
+					render () {
+						let ctx = this.root.toneCtx;
+							RTR.Graphic.strokeCircle(ctx, this.x, this.y, this.radius, this.color, DOM.vmin * 0.75);
+
+							//ctx.rotate(this.rad);
+							ctx.strokeStyle = "Cyan";
+							ctx.lineWidth = DOM.vmin * 0.75;
+							ctx.strokeRect(this.x - DOM.vmin * 7.5, this.y - DOM.vmin * 7.5, DOM.vmin * 15, DOM.vmin * 15 * this.length);
+					}
 				}
 			}
 
@@ -166,13 +178,6 @@ class RTR {
 			render () {
 				let ctx = this.root.toneCtx;
 					RTR.Graphic.strokeCircle(ctx, this.x, this.y, this.radius, this.color, DOM.vmin * 0.75);
-
-					/*ctx.rotate(this.rad);
-					ctx.strokeStyle = "Cyan";
-					ctx.lineWidth = DOM.vmin * 0.75;
-					ctx.strokeRect(this.x, this.y - DOM.vmin * 0.75, DOM.vmin * 1.5, 150);
-					ctx.lineWidth = 1;
-					ctx.rotate(0);*/
 			}
 		}
 	}
@@ -210,7 +215,9 @@ class RTR {
 						new DOM("RTR-ToneStream-EndPoint", {
 							events: {
 								"click": () => {
-									this.sePlayer.src = "assets/sounds/Tone.wav";
+									const SOUNDS = ["assets/sounds/Tone.wav", "assets/sounds/Tone_Good.wav", "assets/sounds/Tone_Great.mp3", "assets/sounds/Tone_Perfect.wav"];
+
+									this.sePlayer.src = SOUNDS[Math.random.randomInt(3)];
 									this.sePlayer.play();
 
 									this.score.score += Math.random.randomInt(1000, 1500);

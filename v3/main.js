@@ -32,7 +32,7 @@ window.addEventListener("keydown", (event) => {
 	}
 });
 
-/*setInterval(() => {
+setInterval(() => {
 	switch (Math.random.randomInt(1)) {
 		case 0:
 			new RTR.Tone(base, 180 / 8 * Math.random.randomInt(0, 8));
@@ -42,10 +42,10 @@ window.addEventListener("keydown", (event) => {
 			new RTR.LongTone(base, 180 / 8 * Math.random.randomInt(0, 8), 8);
 			break;
 	}
-}, 500);*/
+}, 500);
 
-/*setInterval(() => {
+setInterval(() => {
 	base.score.score += Math.random.randomInt(1000, 1500);
 	
 	if (base.score.score >= 1000000) base.score.score = 0;
-});*/
+});
